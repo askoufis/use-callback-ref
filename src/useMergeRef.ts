@@ -1,10 +1,10 @@
-import * as React from 'react';
+import { useLayoutEffect, useEffect, type MutableRefObject } from 'react';
 
 import { assignRef } from './assignRef';
 import { ReactRef } from './types';
 import { useCallbackRef } from './useRef';
 
-const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect;
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
 const currentValues = new WeakMap<any, ReactRef<any>[]>();
 
@@ -22,7 +22,7 @@ const currentValues = new WeakMap<any, ReactRef<any>[]>();
  *   return <div ref={domRef}>...</div>
  * }
  */
-export function useMergeRefs<T>(refs: ReactRef<T>[], defaultValue?: T): React.MutableRefObject<T | null> {
+export function useMergeRefs<T>(refs: ReactRef<T>[], defaultValue?: T): MutableRefObject<T | null> {
   const callbackRef = useCallbackRef<T>(defaultValue || null, (newValue) =>
     refs.forEach((ref) => assignRef(ref, newValue))
   );
